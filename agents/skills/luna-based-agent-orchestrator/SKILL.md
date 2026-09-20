@@ -1,9 +1,9 @@
 ---
-name: astra-orchestrator
-description: Orchestrate complex Codex coding work for the Pro profile with GPT-6 Astra at medium reasoning as planner/integrator, Luna subagents for exploration, implementation, testing, and research, and an Astra reviewer. Use for multi-file features, debugging across components, repo-wide changes, parallelizable workstreams, or whenever the user asks to delegate or use subagents. Do not use for trivial one-file edits or simple questions.
+name: luna-based-agent-orchestrator
+description: Orchestrate complex Codex coding work with GPT-6 Astra at medium reasoning as planner/integrator, GPT-5.6 Luna subagents at max reasoning for exploration, implementation, testing, and research, and an Astra reviewer at low reasoning. Use for multi-file features, debugging across components, repo-wide changes, parallelizable workstreams, or whenever the user asks to delegate or use subagents. Do not use for trivial one-file edits or simple questions.
 ---
 
-# Astra Orchestrator — Pro Profile
+# Luna-based Agent Orchestrator
 
 The user's explicit instructions take precedence over this skill.
 
@@ -103,7 +103,7 @@ When spawning agents, use these models by default:
 - researcher: `gpt-5.6-luna` at `max` reasoning
 - reviewer: `gpt-6-astra` at `low` reasoning
 
-The root keeps the Pro profile configuration from `.codex/config.toml`: GPT-6 Astra at medium reasoning. The role files in `.codex/agents/` explicitly set Luna reasoning to `max` and reviewer reasoning to `low`. Preserve those efforts when spawning agents unless the user requests a change. Do not change the root model from within a session.
+The root uses `.codex/config.toml`: GPT-6 Astra at medium reasoning. The role files in `.codex/agents/` explicitly set Luna reasoning to `max` and reviewer reasoning to `low`. Preserve those efforts when spawning agents unless the user requests a change. Do not change the root model from within a session.
 
 For every delegated task:
 

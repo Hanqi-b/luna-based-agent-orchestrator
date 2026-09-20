@@ -1,4 +1,4 @@
-# Codex: Astra orchestrator + Luna subagents
+# Luna-based Agent Orchestrator: Astra root + Luna subagents
 #
 # Main knobs to change:
 #   model / model_reasoning_effort
@@ -28,6 +28,7 @@ enabled = true
 max_concurrent_threads_per_session = 4
 
 # Default for any spawned subagent that does not explicitly choose a model.
-# Plan defaults: Pro uses max Luna reasoning; Plus uses medium Luna reasoning.
+# Luna execution roles use maximum reasoning; the root and reviewer settings are
+# pinned in their respective configuration files.
 default_subagent_model = "gpt-5.6-luna"
 default_subagent_reasoning_effort = "max"

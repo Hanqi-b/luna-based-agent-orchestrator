@@ -13,9 +13,9 @@ $banner = @'
 | / ___ \ ___) || | |  _ <  / ___ \     |
 |/_/   \_\____/ |_| |_| \_\/_/   \_\    |
 |                                       |
-|       O R C H E S T R A T O R         |
-|   Plan and orchestrate with Astra.    |
-|          Execute with Luna.           |
+|       L U N A  O R C H E S T R A T O R |
+|   Orchestrate with Astra.              |
+|          Execute with Luna.            |
 +---------------------------------------+
 '@
 
@@ -46,29 +46,6 @@ function Read-Confirmation {
             'no' { return $false }
             '' { return $DefaultYes }
             default { [Console]::WriteLine('Please answer yes or no.') }
-        }
-    }
-}
-
-function Read-Plan {
-    [Console]::WriteLine('Codex plan:')
-    [Console]::WriteLine('  1) Pro  - GPT-6 Astra orchestrates, GPT-5.6 Luna executes, GPT-6 Astra reviews')
-    [Console]::WriteLine('  2) Plus - GPT-5.6 Luna (max reasoning) orchestrates, GPT-5.6 Luna executes, GPT-6 Astra reviews')
-
-    while ($true) {
-        [Console]::Write('Select plan [1/2] (default 1): ')
-        $answer = [Console]::In.ReadLine()
-        if ($null -eq $answer) {
-            throw 'Input ended before setup was complete.'
-        }
-
-        switch ($answer.Trim().ToLowerInvariant()) {
-            '1' { return 'pro' }
-            'pro' { return 'pro' }
-            '' { return 'pro' }
-            '2' { return 'plus' }
-            'plus' { return 'plus' }
-            default { [Console]::WriteLine('Please answer 1 (Pro) or 2 (Plus).') }
         }
     }
 }
@@ -317,19 +294,14 @@ try {
         throw 'Target repository must be different from the setup source directory.'
     }
 
-    $plan = Read-Plan
-    $profileDirectory = Join-Path $scriptDir "profiles/$plan"
-
     $installed = 0
     foreach ($component in '.codex', '.agents', 'AGENTS.md') {
-        if (Read-Confirmation -Prompt "Install ${component}?" -DefaultYes $true) {
-            if (Install-Component -Name $component -TargetDirectory $targetDirectory) {
         if (Read-Confirmation -Prompt "Install $component?" -DefaultYes $true) {
             $result = if ($component -eq '.codex') {
-                Install-Component -Name $component -TargetDirectory $targetDirectory -SourcePath (Join-Path $profileDirectory "codex")
+                Install-Component -Name $component -TargetDirectory $targetDirectory -SourcePath (Join-Path $scriptDir 'codex')
             }
             elseif ($component -eq '.agents') {
-                Install-Component -Name $component -TargetDirectory $targetDirectory -SourcePath (Join-Path $profileDirectory "agents")
+                Install-Component -Name $component -TargetDirectory $targetDirectory -SourcePath (Join-Path $scriptDir 'agents')
             }
             else {
                 Install-Component -Name $component -TargetDirectory $targetDirectory
@@ -344,7 +316,7 @@ try {
     }
 
     [Console]::WriteLine()
-    [Console]::WriteLine("Setup complete. $installed component(s) installed in $targetDirectory (plan: $plan).")
+    [Console]::WriteLine("Setup complete. $installed component(s) installed in $targetDirectory.")
     [Console]::WriteLine('See guides/ for optional Codex model and Fast-mode configurations.')
 }
 catch {
