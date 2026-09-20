@@ -30,6 +30,10 @@ The root and reviewer use Astra; routine execution subagents use Luna.
 
 Do not override a Luna subagent to a more expensive model unless the user explicitly asks for escalation or a Luna worker reports that the task requires higher-level reasoning.
 
+## Quota safeguard
+
+Normalize the user's typo `luna-reseve` to `luna-reserve`. When the weekly quota remaining is below 10% or `luna-reserve` mode begins, force every execution subagent—explorer, worker, tester, researcher, and any generic child—to use `gpt-5.6-luna` with `max` reasoning. Do not downgrade these subagents to medium or low reasoning or switch them to another model. Keep the GPT-6 Astra root and Astra low reviewer unchanged. This is a policy trigger/readout, not a claim that the Skill can inspect quota automatically; apply it when the quota or mode state is supplied or reported.
+
 ---
 
 ## Delegation gate
