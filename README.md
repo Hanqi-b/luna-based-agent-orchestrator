@@ -39,6 +39,11 @@ reasoning. Environment, dependency, permission, test, or missing-information
 problems do not trigger it. Astra is outside the normal orchestration path and
 is used only when explicitly selected by the user for an exceptional problem.
 
+During `luna-reserve` mode or when the weekly quota remaining is below 10%,
+every subagent, including the reviewer, uses GPT-6 Luna at "max". The Worker
+fallback is suspended until the safeguard ends. The root keeps its selected
+model; the Skill applies this rule when the mode or quota state is reported.
+
 ## Repository layout
 
 ~~~

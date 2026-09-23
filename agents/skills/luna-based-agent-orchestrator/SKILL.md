@@ -32,7 +32,7 @@ Astra is outside the normal orchestration path. Use it only when explicitly sele
 
 ## Quota safeguard
 
-Normalize the user's typo `luna-reseve` to `luna-reserve`. When the weekly quota remaining is below 10% or `luna-reserve` mode begins, keep every execution subagent—explorer, worker, tester, researcher, and any generic child—on `gpt-6-luna` with `max` reasoning. Do not downgrade these subagents to medium or low reasoning or switch them to another model for quota reasons. The evidence-based worker fallback below remains available for coding failures, independent of quota. Keep the GPT-6 Sol root and Sol max reviewer unchanged. This is a policy trigger/readout, not a claim that the Skill can inspect quota automatically; apply it when the quota or mode state is supplied or reported.
+Treat `lunareserve` and the typo `luna-reseve` as `luna-reserve`. When `luna-reserve` mode begins or the weekly quota remaining is below 10%, every subagent, regardless of role—including explorer, worker, tester, researcher, reviewer, and any generic child—must use `gpt-6-luna` with `max` reasoning. Explicitly override the reviewer's normal `gpt-6-sol` model when spawning it; its independent, read-only duties remain unchanged. Do not use the `gpt-5.6-luna` worker fallback or any other subagent model while the safeguard is active. The root is the current Codex session, not a subagent, and keeps its selected model. This is a policy trigger/readout, not a claim that the Skill can inspect quota automatically; apply it when the quota or mode state is supplied or reported.
 
 ---
 
@@ -122,7 +122,7 @@ Do not silently substitute the root agent for a required Luna worker.
 
 Do not spawn Astra agents unless the user explicitly selects Astra for an exceptional hard problem. Routine execution remains on Luna.
 
-The root may retry a coding or repository implementation task with the existing `worker` role on `gpt-5.6-luna` at `max` only after `gpt-6-luna` was actually tried and clearly fell short on coding or repository reasoning, whether or not code was produced. Do not use this fallback for environment, dependency, permission, test-facility, or missing-information problems. Do not switch models automatically after every failure.
+Outside the quota safeguard, the root may retry a coding or repository implementation task with the existing `worker` role on `gpt-5.6-luna` at `max` only after `gpt-6-luna` was actually tried and clearly fell short on coding or repository reasoning, whether or not code was produced. Do not use this fallback for environment, dependency, permission, test-facility, or missing-information problems. Do not switch models automatically after every failure.
 
 ---
 
