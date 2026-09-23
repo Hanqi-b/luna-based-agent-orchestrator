@@ -1,8 +1,8 @@
 # Luna-based Agent Orchestrator
 
 Luna-based Agent Orchestrator is a Codex Skill and project-scoped configuration
-for complex repository work. It keeps Astra as the root orchestrator and
-reviewer while Luna handles the bounded execution roles.
+for complex repository work. Sol handles orchestration and review while Luna
+handles most execution work.
 
 This repository contains one supported configuration. There is no plan
 selection step during installation.
@@ -12,19 +12,19 @@ selection step during installation.
 The preserved orchestration topology is:
 
 ~~~
-GPT-6 Astra root (medium)
-├── GPT-5.6 Luna explorer (max)
-├── GPT-5.6 Luna worker (max)
-├── GPT-5.6 Luna tester (max)
-├── GPT-5.6 Luna researcher (max)
-└── GPT-6 Astra reviewer (low)
+GPT-6 Sol root (high; max may be selected manually)
+├── GPT-6 Luna explorer (max)
+├── GPT-6 Luna worker (max)
+├── GPT-6 Luna tester (max)
+├── GPT-6 Luna researcher (max)
+└── GPT-6 Sol reviewer (max)
 ~~~
 
 | Setting | Value |
 |---|---|
-| Root / integrator | GPT-6 Astra, "medium" reasoning |
-| Explorer, worker, tester, researcher | GPT-5.6 Luna, "max" reasoning |
-| Reviewer | GPT-6 Astra, "low" reasoning |
+| Root / integrator | GPT-6 Sol, "high" reasoning; "max" may be selected manually |
+| Explorer, worker, tester, researcher | GPT-6 Luna, "max" reasoning |
+| Reviewer | GPT-6 Sol, "max" reasoning |
 | Maximum concurrent child threads | 4 |
 | Delegation owner | Root agent |
 
@@ -32,6 +32,12 @@ The root maps the work, delegates bounded tasks, integrates the results, and
 performs final verification. Luna workers are execution subagents; the Skill
 does not introduce a second planning hierarchy or a new recursive orchestration
 layer.
+
+The existing worker role may use GPT-5.6 Luna at "max" as an optional fallback
+only after GPT-6 Luna was tried and clearly fell short on coding or repository
+reasoning. Environment, dependency, permission, test, or missing-information
+problems do not trigger it. Astra is outside the normal orchestration path and
+is used only when explicitly selected by the user for an exceptional problem.
 
 ## Repository layout
 
@@ -107,8 +113,7 @@ review.
 ~~~
 
 The Skill is intentionally not a generic model-routing framework. It preserves
-the existing roles, model assignments, reasoning settings, delegation gate,
-and concurrency limit so that the original behavior remains recognizable.
+the existing roles, delegation gate, and concurrency limit.
 
 ## Guides and token usage
 
@@ -129,7 +134,7 @@ single root thread is often the most efficient choice.
 
 This project is a fork of
 [donvito/codex-astra-luna-orchestrator](https://github.com/donvito/codex-astra-luna-orchestrator).
-The fork is derived from the upstream Pro configuration, keeps its Astra/Luna
+The fork is derived from the upstream Pro configuration, keeps its role
 topology, and removes the alternate Plus configuration. The upstream Skill was
 named "astra-orchestrator"; this fork installs the renamed
 "luna-based-agent-orchestrator" Skill.

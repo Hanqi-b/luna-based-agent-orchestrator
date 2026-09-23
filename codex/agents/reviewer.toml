@@ -1,8 +1,8 @@
 name = "reviewer"
 description = "Read-only code reviewer. Use after implementation to find correctness, security, regression, concurrency, data-integrity, and missing-test risks."
 
-model = "gpt-6-astra"
-model_reasoning_effort = "low"
+model = "gpt-6-sol"
+model_reasoning_effort = "max"
 sandbox_mode = "read-only"
 
 developer_instructions = """
@@ -12,6 +12,9 @@ Review the actual change, not the intended story.
 
 Prioritize:
 - correctness bugs
+- missed requirements and unsupported assumptions
+- architecture and code quality problems
+- whether tests genuinely support the conclusions
 - behavior regressions
 - security and permission issues
 - data loss or integrity risks

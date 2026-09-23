@@ -41,19 +41,19 @@ class LayoutTests(unittest.TestCase):
     def test_preserved_model_matrix(self):
         config = load_settings(ROOT / "codex/config.toml")
 
-        self.assertEqual(config["model"], "gpt-6-astra")
-        self.assertEqual(config["model_reasoning_effort"], "medium")
+        self.assertEqual(config["model"], "gpt-6-sol")
+        self.assertEqual(config["model_reasoning_effort"], "high")
         self.assertEqual(config["agents"]["enabled"], True)
         self.assertEqual(config["agents"]["max_concurrent_threads_per_session"], 4)
-        self.assertEqual(config["agents"]["default_subagent_model"], "gpt-5.6-luna")
+        self.assertEqual(config["agents"]["default_subagent_model"], "gpt-6-luna")
         self.assertEqual(config["agents"]["default_subagent_reasoning_effort"], "max")
 
         expected = {
-            "explorer.toml": ("gpt-5.6-luna", "max", "read-only"),
-            "researcher.toml": ("gpt-5.6-luna", "max", "read-only"),
-            "tester.toml": ("gpt-5.6-luna", "max", "workspace-write"),
-            "worker.toml": ("gpt-5.6-luna", "max", "workspace-write"),
-            "reviewer.toml": ("gpt-6-astra", "low", "read-only"),
+            "explorer.toml": ("gpt-6-luna", "max", "read-only"),
+            "researcher.toml": ("gpt-6-luna", "max", "read-only"),
+            "tester.toml": ("gpt-6-luna", "max", "workspace-write"),
+            "worker.toml": ("gpt-6-luna", "max", "workspace-write"),
+            "reviewer.toml": ("gpt-6-sol", "max", "read-only"),
         }
         for filename, (model, effort, sandbox) in expected.items():
             with self.subTest(filename=filename):

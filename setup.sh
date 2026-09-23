@@ -13,7 +13,7 @@ cat <<'BANNER'
 |/_/   \_\____/ |_| |_| \_\/_/   \_\    |
 |                                       |
 |       L U N A  O R C H E S T R A T O R |
-|   Orchestrate with Astra.              |
+|   Orchestrate with Sol.                |
 |          Execute with Luna.            |
 +---------------------------------------+
 BANNER
@@ -212,4 +212,4 @@ for component in .codex .agents AGENTS.md; do
 done
 
 printf '\nSetup complete. %s component(s) installed in %s.\n' "$installed" "$target_dir"
-printf '%s\n' 'See guides/ for optional Codex model and Fast-mode configurations.'
+printf '%s\n' 'See guides/ for optional Sol/Luna model and workflow configurations.'

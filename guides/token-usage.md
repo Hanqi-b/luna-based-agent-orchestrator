@@ -44,7 +44,7 @@ For comparable measurements:
 1. Pick representative tasks in one repository: a single-file fix, a
    multi-file feature, a cross-component bug, and a research-heavy change.
 2. Run each task in a root-only configuration and with the current
-   Astra/Luna orchestration configuration.
+   Sol/Luna orchestration configuration.
 3. Record uncached input, cached input, output and reasoning tokens; spawned
    subagents; wall time; and 5-hour and 7-day rate-limit changes.
 4. Repeat each case two or three times because variance between identical
@@ -53,7 +53,7 @@ For comparable measurements:
 
 Suggested results table:
 
-| Task | Config | Astra uncached / cached / out | Luna uncached / cached / out | Subagents | Wall | 5h delta | 7d delta |
+| Task | Config | Sol uncached / cached / out | Luna uncached / cached / out | Subagents | Wall | 5h delta | 7d delta |
 |---|---|---|---|---:|---:|---:|---:|
 
 ## Reading the numbers
@@ -65,16 +65,17 @@ Rate-limit percentages are account-wide and may be affected by other sessions.
 The change in the 5-hour and 7-day "used_percent" values is the most useful
 single measure of account impact.
 
-The root thread is a large line item even at low reasoning: it stays alive for
-the whole task, polls subagents, and re-reads context. Parallelism trades tokens
-for latency because every spawned subagent reads its own context.
+The root thread is a large line item: it stays alive for the whole task, polls
+subagents, and re-reads context. Parallelism trades tokens for latency because
+every spawned subagent reads its own context.
 
 Auto-review guardian threads are Codex approval reviewers, not part of this
 configuration. They are small but not free.
 
-## Historical sample
+## Historical sample (retained records)
 
-Treat this as a scale reference, not a benchmark for every repository.
+Treat this as a scale reference from the previous Astra/Luna configuration, not
+a benchmark for every repository or a description of the current model map.
 
 - Task: cross-component file-watcher refresh after an external rename.
 - Configuration: historical Astra root at "low", Luna subagents at "medium",
@@ -108,8 +109,7 @@ Cache hit rate on input: 96.3%.
 - Ask subagents for short reports so the root does not repeatedly re-read logs.
 - Skip the reviewer for low-risk changes when an independent audit adds little
   value.
-- Lower Luna reasoning only for a deliberate speed/cost tradeoff, and keep the
-  Skill and configuration wording synchronized.
+- Keep Luna reasoning at "max" for the current configuration.
 
 If you run this protocol on your own projects, record the task shape, repository
 size, Codex version, configuration, and script output. Redact local paths

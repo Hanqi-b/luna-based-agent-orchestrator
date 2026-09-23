@@ -14,7 +14,7 @@ $banner = @'
 |/_/   \_\____/ |_| |_| \_\/_/   \_\    |
 |                                       |
 |       L U N A  O R C H E S T R A T O R |
-|   Orchestrate with Astra.              |
+|   Orchestrate with Sol.                |
 |          Execute with Luna.            |
 +---------------------------------------+
 '@
@@ -317,7 +317,7 @@ try {
 
     [Console]::WriteLine()
     [Console]::WriteLine("Setup complete. $installed component(s) installed in $targetDirectory.")
-    [Console]::WriteLine('See guides/ for optional Codex model and Fast-mode configurations.')
+    [Console]::WriteLine('See guides/ for optional Sol/Luna model and workflow configurations.')
 }
 catch {
     [Console]::Error.WriteLine("Setup cancelled: $($_.Exception.Message)")

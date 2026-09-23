@@ -3,6 +3,6 @@ Luna-based Agent Orchestrator
 This repository is a modified fork of:
 https://github.com/donvito/codex-astra-luna-orchestrator
 
-The fork preserves the upstream Astra/Luna orchestration strategy while
-renaming the Skill and removing the alternate configuration. The original
-LICENSE file and upstream attribution are retained.
+The fork preserves the upstream role structure while renaming the Skill,
+removing the alternate configuration, and updating the model mapping to
+Sol/Luna. The original LICENSE file and upstream attribution are retained.

@@ -1,18 +1,16 @@
 # Routine Coding
 
-Choose this preset for predictable, routine coding tasks where lower cost and
-faster orchestration are preferred.
+Choose this preset for predictable, routine coding tasks where faster
+orchestration is preferred.
 
-This is an optional root override that lowers Astra from "medium" to "low".
-The installed Luna execution subagents remain at "max" and the Astra reviewer
-remains at "low". If you adopt this override, update the installed Skill's
-root-reasoning wording to match.
+This preset keeps the Sol root at "high" while selecting the fast service tier.
+The installed Luna execution subagents and Sol reviewer remain at "max".
 
 Add or merge this into "~/.codex/config.toml":
 
 ~~~
-model = "gpt-6-astra"
-model_reasoning_effort = "low"
+model = "gpt-6-sol"
+model_reasoning_effort = "high"
 service_tier = "fast"
 ~~~
 
