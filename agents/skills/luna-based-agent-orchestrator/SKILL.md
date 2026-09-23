@@ -1,6 +1,6 @@
 ---
 name: luna-based-agent-orchestrator
-description: Orchestrate complex Codex coding work with GPT-6 Sol High or Max as root, GPT-6 Luna Max subagents for exploration, implementation, testing, and research, and GPT-6 Sol Max for independent review. Use for multi-file features, debugging across components, repo-wide changes, parallelizable workstreams, or whenever the user asks to delegate or use subagents. Do not use for trivial one-file edits or simple questions.
+description: Orchestrate complex Codex coding work with GPT-6 Sol High or Max as root, GPT-6 Luna Max for exploration, testing, and research, GPT-5.6 Luna Max for implementation, and GPT-6 Sol Max for independent review. Use for multi-file features, debugging across components, repo-wide changes, parallelizable workstreams, or whenever the user asks to delegate or use subagents. Do not use for trivial one-file edits or simple questions.
 ---
 
 # Luna-based Agent Orchestrator
@@ -17,7 +17,7 @@ The expected default topology is:
 
 - root: GPT-6 Sol at high reasoning (max may be selected manually)
 - explorer: GPT-6 Luna at max reasoning
-- worker: GPT-6 Luna at max reasoning
+- worker: GPT-5.6 Luna at max reasoning
 - tester: GPT-6 Luna at max reasoning
 - reviewer: GPT-6 Sol at max reasoning
 - researcher: GPT-6 Luna at max reasoning
@@ -32,7 +32,7 @@ Astra is outside the normal orchestration path. Use it only when explicitly sele
 
 ## Quota safeguard
 
-Treat `lunareserve` and the typo `luna-reseve` as `luna-reserve`. When `luna-reserve` mode begins or the weekly quota remaining is below 10%, every subagent, regardless of role—including explorer, worker, tester, researcher, reviewer, and any generic child—must use `gpt-6-luna` with `max` reasoning. Explicitly override the reviewer's normal `gpt-6-sol` model when spawning it; its independent, read-only duties remain unchanged. Do not use the `gpt-5.6-luna` worker fallback or any other subagent model while the safeguard is active. The root is the current Codex session, not a subagent, and keeps its selected model. This is a policy trigger/readout, not a claim that the Skill can inspect quota automatically; apply it when the quota or mode state is supplied or reported.
+Treat `lunareserve` and the typo `luna-reseve` as `luna-reserve`. When `luna-reserve` mode begins or the weekly quota remaining is below 10%, every subagent, regardless of role, must use Luna at `max` reasoning: `gpt-5.6-luna` for workers and `gpt-6-luna` for explorers, testers, researchers, reviewers, and any generic child. Explicitly override the reviewer's normal `gpt-6-sol` model when spawning it; its independent, read-only duties remain unchanged. Do not spawn a Sol, Astra, or lower-reasoning subagent while the safeguard is active. The root is the current Codex session, not a subagent, and keeps its selected model. This is a policy trigger/readout, not a claim that the Skill can inspect quota automatically; apply it when the quota or mode state is supplied or reported.
 
 ---
 
@@ -102,7 +102,7 @@ The root must not offload architectural ownership to a subagent.
 When spawning agents, use these models by default:
 
 - explorer: `gpt-6-luna` at `max` reasoning
-- worker: `gpt-6-luna` at `max` reasoning
+- worker: `gpt-5.6-luna` at `max` reasoning
 - tester: `gpt-6-luna` at `max` reasoning
 - researcher: `gpt-6-luna` at `max` reasoning
 - reviewer: `gpt-6-sol` at `max` reasoning
@@ -121,8 +121,6 @@ For every delegated task:
 Do not silently substitute the root agent for a required Luna worker.
 
 Do not spawn Astra agents unless the user explicitly selects Astra for an exceptional hard problem. Routine execution remains on Luna.
-
-Outside the quota safeguard, the root may retry a coding or repository implementation task with the existing `worker` role on `gpt-5.6-luna` at `max` only after `gpt-6-luna` was actually tried and clearly fell short on coding or repository reasoning, whether or not code was produced. Do not use this fallback for environment, dependency, permission, test-facility, or missing-information problems. Do not switch models automatically after every failure.
 
 ---
 
@@ -423,4 +421,4 @@ If the user explicitly asks to see delegation, report:
 - assigned task
 - completion status
 
-Do not claim a Luna agent was used unless the trace contains a successful `spawn_agent` call using `gpt-6-luna`, or `gpt-5.6-luna` for the conditional worker fallback.
+Do not claim a Luna agent was used unless the trace contains a successful `spawn_agent` call using the appropriate Luna model for that role.

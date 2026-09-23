@@ -14,7 +14,7 @@ The preserved orchestration topology is:
 ~~~
 GPT-6 Sol root (high; max may be selected manually)
 ├── GPT-6 Luna explorer (max)
-├── GPT-6 Luna worker (max)
+├── GPT-5.6 Luna worker (max)
 ├── GPT-6 Luna tester (max)
 ├── GPT-6 Luna researcher (max)
 └── GPT-6 Sol reviewer (max)
@@ -23,7 +23,8 @@ GPT-6 Sol root (high; max may be selected manually)
 | Setting | Value |
 |---|---|
 | Root / integrator | GPT-6 Sol, "high" reasoning; "max" may be selected manually |
-| Explorer, worker, tester, researcher | GPT-6 Luna, "max" reasoning |
+| Explorer, tester, researcher | GPT-6 Luna, "max" reasoning |
+| Worker | GPT-5.6 Luna, "max" reasoning |
 | Reviewer | GPT-6 Sol, "max" reasoning |
 | Maximum concurrent child threads | 4 |
 | Delegation owner | Root agent |
@@ -33,16 +34,13 @@ performs final verification. Luna workers are execution subagents; the Skill
 does not introduce a second planning hierarchy or a new recursive orchestration
 layer.
 
-The existing worker role may use GPT-5.6 Luna at "max" as an optional fallback
-only after GPT-6 Luna was tried and clearly fell short on coding or repository
-reasoning. Environment, dependency, permission, test, or missing-information
-problems do not trigger it. Astra is outside the normal orchestration path and
-is used only when explicitly selected by the user for an exceptional problem.
+Astra is outside the normal orchestration path and is used only when explicitly
+selected by the user for an exceptional problem.
 
 During `luna-reserve` mode or when the weekly quota remaining is below 10%,
-every subagent, including the reviewer, uses GPT-6 Luna at "max". The Worker
-fallback is suspended until the safeguard ends. The root keeps its selected
-model; the Skill applies this rule when the mode or quota state is reported.
+every subagent uses Luna at "max": GPT-5.6 Luna for workers and GPT-6 Luna for
+all other roles, including the reviewer. The root keeps its selected model;
+the Skill applies this rule when the mode or quota state is reported.
 
 ## Repository layout
 

@@ -12,7 +12,7 @@ The topology is:
 ~~~
 Sol root (high)
 ├── Luna explorer (max)
-├── Luna worker (max)
+├── GPT-5.6 Luna worker (max)
 ├── Luna tester (max)
 ├── Luna researcher (max)
 └── Sol reviewer (max)
@@ -36,8 +36,14 @@ For the named roles, use these model settings in the corresponding files under
 "codex/agents/":
 
 ~~~
-# explorer.toml, worker.toml, tester.toml, researcher.toml
+# explorer.toml, tester.toml, researcher.toml
 model = "gpt-6-luna"
+model_reasoning_effort = "max"
+~~~
+
+~~~
+# worker.toml
+model = "gpt-5.6-luna"
 model_reasoning_effort = "max"
 ~~~
 
