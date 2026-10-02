@@ -12,22 +12,26 @@ selection step during installation.
 The preserved orchestration topology is:
 
 ~~~
-GPT-6 Sol root (high; max may be selected manually)
+GPT-6.1 Sol root (high)
 ├── GPT-6 Luna explorer (max)
 ├── GPT-5.6 Luna worker (max)
 ├── GPT-6 Luna tester (max)
 ├── GPT-6 Luna researcher (max)
-└── GPT-6 Sol reviewer (max)
+└── GPT-6.1 Sol reviewer (high)
 ~~~
 
 | Setting | Value |
 |---|---|
-| Root / integrator | GPT-6 Sol, "high" reasoning; "max" may be selected manually |
+| Root / integrator | GPT-6.1 Sol, "high" reasoning |
 | Explorer, tester, researcher | GPT-6 Luna, "max" reasoning |
 | Worker | GPT-5.6 Luna, "max" reasoning |
-| Reviewer | GPT-6 Sol, "max" reasoning |
+| Reviewer | GPT-6.1 Sol, "high" reasoning |
 | Maximum concurrent child threads | 4 |
 | Delegation owner | Root agent |
+
+The reviewer keeps a read-only role file without a pinned model. The root
+specifies GPT-6.1 Sol High when spawning it normally and GPT-6 Luna Max during
+the quota safeguard.
 
 The root maps the work, delegates bounded tasks, integrates the results, and
 performs final verification. Luna workers are execution subagents; the Skill

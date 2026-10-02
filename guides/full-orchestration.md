@@ -10,19 +10,19 @@ configuration.
 The topology is:
 
 ~~~
-Sol root (high)
+GPT-6.1 Sol root (high)
 ├── Luna explorer (max)
 ├── GPT-5.6 Luna worker (max)
 ├── Luna tester (max)
 ├── Luna researcher (max)
-└── Sol reviewer (max)
+└── GPT-6.1 Sol reviewer (high)
 ~~~
 
 Put the root settings in the project-scoped ".codex/config.toml", or merge
 them into "~/.codex/config.toml" for a personal/global setup:
 
 ~~~
-model = "gpt-6-sol"
+model = "gpt-6.1-sol"
 model_reasoning_effort = "high"
 
 [agents]
@@ -47,13 +47,8 @@ model = "gpt-5.6-luna"
 model_reasoning_effort = "max"
 ~~~
 
-~~~
-# reviewer.toml
-model = "gpt-6-sol"
-model_reasoning_effort = "max"
-~~~
-
-The role files override the inherited "[agents]" defaults. Keep those explicit
-overrides when you want the topology above to remain stable. Remove them only
-when you intentionally want all named roles to follow the defaults in
-"config.toml".
+Keep `sandbox_mode = "read-only"` in `reviewer.toml`, but leave model and effort
+unset. Spawn the reviewer with `gpt-6.1-sol` / `high` normally, or `gpt-6-luna` /
+`max` in safeguard. The Luna role files override the inherited "[agents]"
+defaults; the reviewer would inherit the Luna default if its spawn omitted the
+explicit model and effort.

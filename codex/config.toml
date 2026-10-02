@@ -12,9 +12,8 @@
 # For a personal/global setup, merge the same settings into:
 #   ~/.codex/config.toml
 
-# Root / orchestrator. GPT-6 Sol high is the default; use max manually for
-# exceptional tasks that need additional root reasoning.
-model = "gpt-6-sol"
+# Root / orchestrator: GPT-6.1 Sol high.
+model = "gpt-6.1-sol"
 model_reasoning_effort = "high"
 
 # Safe interactive defaults. Change if your workflow needs otherwise.
@@ -29,7 +28,7 @@ enabled = true
 max_concurrent_threads_per_session = 4
 
 # Default for any spawned subagent that does not explicitly choose a model.
-# Luna execution roles use maximum reasoning; the root and reviewer settings are
-# pinned in their respective configuration files.
+# Luna execution roles use maximum reasoning. Spawn the reviewer explicitly with
+# GPT-6.1 Sol high normally, or GPT-6 Luna max during quota safeguard.
 default_subagent_model = "gpt-6-luna"
 default_subagent_reasoning_effort = "max"

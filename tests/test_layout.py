@@ -41,7 +41,7 @@ class LayoutTests(unittest.TestCase):
     def test_preserved_model_matrix(self):
         config = load_settings(ROOT / "codex/config.toml")
 
-        self.assertEqual(config["model"], "gpt-6-sol")
+        self.assertEqual(config["model"], "gpt-6.1-sol")
         self.assertEqual(config["model_reasoning_effort"], "high")
         self.assertEqual(config["agents"]["enabled"], True)
         self.assertEqual(config["agents"]["max_concurrent_threads_per_session"], 4)
@@ -53,7 +53,6 @@ class LayoutTests(unittest.TestCase):
             "researcher.toml": ("gpt-6-luna", "max", "read-only"),
             "tester.toml": ("gpt-6-luna", "max", "workspace-write"),
             "worker.toml": ("gpt-5.6-luna", "max", "workspace-write"),
-            "reviewer.toml": ("gpt-6-sol", "max", "read-only"),
         }
         for filename, (model, effort, sandbox) in expected.items():
             with self.subTest(filename=filename):
@@ -61,6 +60,11 @@ class LayoutTests(unittest.TestCase):
                 self.assertEqual(role["model"], model)
                 self.assertEqual(role["model_reasoning_effort"], effort)
                 self.assertEqual(role["sandbox_mode"], sandbox)
+
+        reviewer = load_settings(ROOT / "codex/agents/reviewer.toml")
+        self.assertEqual(reviewer["sandbox_mode"], "read-only")
+        self.assertNotIn("model", reviewer)
+        self.assertNotIn("model_reasoning_effort", reviewer)
 
     def test_installers_use_single_source_without_plan_selection(self):
         shell = (ROOT / "setup.sh").read_text(encoding="utf-8")
