@@ -30,9 +30,9 @@ Sol controls orchestration and review; Luna handles most execution volume.
 
 Astra is outside the normal orchestration path. Use it only when explicitly selected by the user for an exceptional hard problem.
 
-## Quota safeguard
+## Luna-reserve mode
 
-Treat `lunareserve` and the typo `luna-reseve` as `luna-reserve`. When `luna-reserve` mode begins or the weekly quota remaining is below 10%, every subagent, regardless of role, must use Luna at `max` reasoning: `gpt-5.6-luna` for workers and `gpt-6-luna` for explorers, testers, researchers, reviewers, and any generic child. Spawn the reviewer explicitly with `gpt-6-luna` at `max`; its independent, read-only duties remain unchanged. Do not spawn a Sol, Astra, or lower-reasoning subagent while the safeguard is active. The root is the current Codex session, not a subagent, and keeps its selected model. This is a policy trigger/readout, not a claim that the Skill can inspect quota automatically; apply it when the quota or mode state is supplied or reported.
+Treat `lunareserve` and the typo `luna-reseve` as `luna-reserve`. Only when the user explicitly enables or reports `luna-reserve` mode, every subagent, regardless of role, must use Luna at `max` reasoning: `gpt-5.6-luna` for workers and `gpt-6-luna` for explorers, testers, researchers, reviewers, and any generic child. Spawn the reviewer explicitly with `gpt-6-luna` at `max`; its independent, read-only duties remain unchanged. Do not spawn a Sol, Astra, or lower-reasoning subagent while the mode is active. The root is the current Codex session, not a subagent, and keeps its selected model. A low weekly quota alone does not enable this mode; the Skill does not inspect quota automatically.
 
 ---
 
@@ -107,7 +107,7 @@ When spawning agents, use these models by default:
 - researcher: `gpt-6-luna` at `max` reasoning
 - reviewer: `gpt-6.1-sol` at `high` reasoning
 
-Recommended root model: GPT-6.1 Sol High. `.codex/config.toml` sets that default. The Luna role files in `.codex/agents/` set reasoning to `max`. The reviewer role file leaves model and effort unset so the root can explicitly spawn it with `gpt-6.1-sol` at `high` normally or `gpt-6-luna` at `max` in safeguard, while preserving its read-only sandbox. Do not change the root model from within a session.
+Recommended root model: GPT-6.1 Sol High. `.codex/config.toml` sets that default. The Luna role files in `.codex/agents/` set reasoning to `max`. The reviewer role file leaves model and effort unset so the root can explicitly spawn it with `gpt-6.1-sol` at `high` normally or `gpt-6-luna` at `max` in `luna-reserve` mode, while preserving its read-only sandbox. Do not change the root model from within a session.
 
 For every delegated task:
 

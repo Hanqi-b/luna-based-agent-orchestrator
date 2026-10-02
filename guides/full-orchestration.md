@@ -49,6 +49,6 @@ model_reasoning_effort = "max"
 
 Keep `sandbox_mode = "read-only"` in `reviewer.toml`, but leave model and effort
 unset. Spawn the reviewer with `gpt-6.1-sol` / `high` normally, or `gpt-6-luna` /
-`max` in safeguard. The Luna role files override the inherited "[agents]"
+`max` in `luna-reserve` mode. The Luna role files override the inherited "[agents]"
 defaults; the reviewer would inherit the Luna default if its spawn omitted the
 explicit model and effort.

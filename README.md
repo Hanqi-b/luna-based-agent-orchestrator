@@ -31,7 +31,7 @@ GPT-6.1 Sol root (high)
 
 The reviewer keeps a read-only role file without a pinned model. The root
 specifies GPT-6.1 Sol High when spawning it normally and GPT-6 Luna Max during
-the quota safeguard.
+`luna-reserve` mode.
 
 The root maps the work, delegates bounded tasks, integrates the results, and
 performs final verification. Luna workers are execution subagents; the Skill
@@ -41,10 +41,10 @@ layer.
 Astra is outside the normal orchestration path and is used only when explicitly
 selected by the user for an exceptional problem.
 
-During `luna-reserve` mode or when the weekly quota remaining is below 10%,
-every subagent uses Luna at "max": GPT-5.6 Luna for workers and GPT-6 Luna for
-all other roles, including the reviewer. The root keeps its selected model;
-the Skill applies this rule when the mode or quota state is reported.
+Only when `luna-reserve` mode is explicitly enabled or reported, every subagent
+uses Luna at "max": GPT-5.6 Luna for workers and GPT-6 Luna for all other roles,
+including the reviewer. The root keeps its selected model. A low weekly quota
+alone does not activate this mode.
 
 ## Repository layout
 
