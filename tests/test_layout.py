@@ -52,7 +52,7 @@ class LayoutTests(unittest.TestCase):
             "explorer.toml": ("gpt-6-luna", "max", "read-only"),
             "researcher.toml": ("gpt-6-luna", "max", "read-only"),
             "tester.toml": ("gpt-6-luna", "max", "workspace-write"),
-            "worker.toml": ("gpt-5.6-luna", "max", "workspace-write"),
+            "worker.toml": ("gpt-6-luna", "max", "workspace-write"),
         }
         for filename, (model, effort, sandbox) in expected.items():
             with self.subTest(filename=filename):

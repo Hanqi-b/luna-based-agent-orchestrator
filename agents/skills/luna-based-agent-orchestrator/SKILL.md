@@ -1,6 +1,6 @@
 ---
 name: luna-based-agent-orchestrator
-description: Orchestrate complex Codex coding work with GPT-6.1 Sol High as root, GPT-6 Luna Max for exploration, testing, and research, GPT-5.6 Luna Max for implementation, and GPT-6.1 Sol High for independent review. Use for multi-file features, debugging across components, repo-wide changes, parallelizable workstreams, or whenever the user asks to delegate or use subagents. Do not use for trivial one-file edits or simple questions.
+description: Orchestrate complex Codex coding work with GPT-6.1 Sol High as root, GPT-6 Luna Max for exploration, implementation, testing, and research, and GPT-6.1 Sol High for independent review. Use for multi-file features, debugging across components, repo-wide changes, parallelizable workstreams, or whenever the user asks to delegate or use subagents. Do not use for trivial one-file edits or simple questions.
 ---
 
 # Luna-based Agent Orchestrator
@@ -17,7 +17,7 @@ The expected default topology is:
 
 - root: GPT-6.1 Sol at high reasoning
 - explorer: GPT-6 Luna at max reasoning
-- worker: GPT-5.6 Luna at max reasoning
+- worker: GPT-6 Luna at max reasoning
 - tester: GPT-6 Luna at max reasoning
 - reviewer: GPT-6.1 Sol at high reasoning
 - researcher: GPT-6 Luna at max reasoning
@@ -32,7 +32,7 @@ Astra is outside the normal orchestration path. Use it only when explicitly sele
 
 ## Luna-reserve mode
 
-Treat `lunareserve` and the typo `luna-reseve` as `luna-reserve`. Only when the user explicitly enables or reports `luna-reserve` mode, every subagent, regardless of role, must use Luna at `max` reasoning: `gpt-5.6-luna` for workers and `gpt-6-luna` for explorers, testers, researchers, reviewers, and any generic child. Spawn the reviewer explicitly with `gpt-6-luna` at `max`; its independent, read-only duties remain unchanged. Do not spawn a Sol, Astra, or lower-reasoning subagent while the mode is active. The root is the current Codex session, not a subagent, and keeps its selected model. A low weekly quota alone does not enable this mode; the Skill does not inspect quota automatically.
+Treat `lunareserve` and the typo `luna-reseve` as `luna-reserve`. Only when the user explicitly enables or reports `luna-reserve` mode, every subagent, regardless of role, must use `gpt-6-luna` at `max` reasoning. Spawn the reviewer explicitly with `gpt-6-luna` at `max`; its independent, read-only duties remain unchanged. Do not spawn a Sol, Astra, or lower-reasoning subagent while the mode is active. The root is the current Codex session, not a subagent, and keeps its selected model. A low weekly quota alone does not enable this mode; the Skill does not inspect quota automatically.
 
 ---
 
@@ -102,7 +102,7 @@ The root must not offload architectural ownership to a subagent.
 When spawning agents, use these models by default:
 
 - explorer: `gpt-6-luna` at `max` reasoning
-- worker: `gpt-5.6-luna` at `max` reasoning
+- worker: `gpt-6-luna` at `max` reasoning
 - tester: `gpt-6-luna` at `max` reasoning
 - researcher: `gpt-6-luna` at `max` reasoning
 - reviewer: `gpt-6.1-sol` at `high` reasoning

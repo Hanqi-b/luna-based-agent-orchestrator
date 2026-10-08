@@ -14,7 +14,7 @@ The preserved orchestration topology is:
 ~~~
 GPT-6.1 Sol root (high)
 ├── GPT-6 Luna explorer (max)
-├── GPT-5.6 Luna worker (max)
+├── GPT-6 Luna worker (max)
 ├── GPT-6 Luna tester (max)
 ├── GPT-6 Luna researcher (max)
 └── GPT-6.1 Sol reviewer (high)
@@ -24,7 +24,7 @@ GPT-6.1 Sol root (high)
 |---|---|
 | Root / integrator | GPT-6.1 Sol, "high" reasoning |
 | Explorer, tester, researcher | GPT-6 Luna, "max" reasoning |
-| Worker | GPT-5.6 Luna, "max" reasoning |
+| Worker | GPT-6 Luna, "max" reasoning |
 | Reviewer | GPT-6.1 Sol, "high" reasoning |
 | Maximum concurrent child threads | 4 |
 | Delegation owner | Root agent |
@@ -42,9 +42,8 @@ Astra is outside the normal orchestration path and is used only when explicitly
 selected by the user for an exceptional problem.
 
 Only when `luna-reserve` mode is explicitly enabled or reported, every subagent
-uses Luna at "max": GPT-5.6 Luna for workers and GPT-6 Luna for all other roles,
-including the reviewer. The root keeps its selected model. A low weekly quota
-alone does not activate this mode.
+uses GPT-6 Luna at "max" for every role, including the reviewer. The root keeps
+its selected model. A low weekly quota alone does not activate this mode.
 
 ## Repository layout
 

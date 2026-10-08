@@ -12,7 +12,7 @@ The topology is:
 ~~~
 GPT-6.1 Sol root (high)
 ├── Luna explorer (max)
-├── GPT-5.6 Luna worker (max)
+├── GPT-6 Luna worker (max)
 ├── Luna tester (max)
 ├── Luna researcher (max)
 └── GPT-6.1 Sol reviewer (high)
@@ -43,7 +43,7 @@ model_reasoning_effort = "max"
 
 ~~~
 # worker.toml
-model = "gpt-5.6-luna"
+model = "gpt-6-luna"
 model_reasoning_effort = "max"
 ~~~
 
