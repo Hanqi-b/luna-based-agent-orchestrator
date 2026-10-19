@@ -32,10 +32,10 @@ default_subagent_model = "gpt-6-luna"
 default_subagent_reasoning_effort = "max"
 ~~~
 
-The runtime capacity is 8 concurrent subagents. The Skill keeps default and
-`luna-reserve` mode at 4 and permits up to 8 only for explicitly requested
-`sol-high` mode. This is a shared task-wide budget, excluding the root. A lower
-host/session limit still applies; existing sessions must load the new
+The runtime capacity and Skill limit are 8 concurrent subagents in every mode:
+default, `luna-reserve`, and explicit `sol-high`. The `sol-high` model selection
+still requires an explicit user request. This is a shared task-wide budget,
+excluding the root. A lower host/session limit still applies; existing sessions must load the new
 configuration before additional capacity can be available.
 
 For the named roles, use these model settings in the corresponding files under

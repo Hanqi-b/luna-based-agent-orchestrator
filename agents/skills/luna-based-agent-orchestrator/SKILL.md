@@ -235,11 +235,11 @@ Use `researcher` for:
 
 ## Parallelism
 
-The concurrent subagent ceiling is **8 in explicit `sol-high` mode** and **4 in default or `luna-reserve` mode**. These limits exclude the root and apply across the entire task tree, including recursively spawned descendants and replacements; they are not separate allowances for each parent. The root owns the shared budget and includes the available allocation in every delegation contract. Spawn only as many agents as the work needs, not enough to fill the ceiling.
+The concurrent subagent ceiling is **8 in every mode**, including default, `luna-reserve`, and explicit `sol-high`. This limit excludes the root and applies across the entire task tree, including recursively spawned descendants and replacements; it is not a separate allowance for each parent. The root owns the shared budget and includes the available allocation in every delegation contract. Spawn only as many agents as the work needs, not enough to fill the ceiling.
 
-The installation's `agents.max_concurrent_threads_per_session = 8` supplies runtime capacity for `sol-high`. The mode-specific 4/8 limits are enforced by this orchestration policy; the shared runtime setting alone does not select a mode or constrain unrelated skills to four agents. Do not rewrite runtime configuration when switching modes. A lower runtime or host limit takes precedence: queue excess work and report the effective limit rather than claiming eight slots are available. Editing configuration does not increase a running session's allocated slots; use a session that has loaded the updated configuration when greater capacity is needed.
+The installation's `agents.max_concurrent_threads_per_session = 8` supplies runtime capacity for every mode. The shared runtime setting alone does not select a mode; `sol-high` still requires an explicit user request. Do not rewrite runtime configuration when switching modes. A lower runtime or host limit takes precedence: queue excess work and report the effective limit rather than claiming eight slots are available. Editing configuration does not increase a running session's allocated slots; use a session that has loaded the updated configuration when greater capacity is needed.
 
-Run independent tasks in parallel within the active mode's shared budget.
+Run independent tasks in parallel within the shared eight-subagent budget.
 
 When two or more delegated tasks are independent and capacity is available, spawn them before waiting for any one of them. Queue remaining independent tasks until capacity is available.
 
@@ -407,7 +407,7 @@ Before producing the final answer for a delegated task, confirm that:
 
 - every required subagent was actually spawned
 - every subagent used the active mode's model and reasoning effort, including descendants and replacements
-- concurrent subagents stayed within the shared mode limit (8 for `sol-high`, 4 otherwise) and the runtime limit
+- concurrent subagents stayed within the shared limit of 8 in every mode and the runtime limit
 - every required subagent either completed or explicitly failed
 - material findings were integrated
 - conflicting findings were resolved

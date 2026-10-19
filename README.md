@@ -26,7 +26,7 @@ GPT-6.1 Sol root (high)
 | Explorer, tester, researcher | GPT-6 Luna, "max" reasoning |
 | Worker | GPT-6 Luna, "max" reasoning |
 | Reviewer | GPT-6.1 Sol, "high" reasoning |
-| Concurrent subagent limit | Default / luna-reserve: 4; explicit sol-high: 8 |
+| Concurrent subagent limit | 8 in all modes, excluding the root |
 | Delegation owner | Root agent |
 
 The reviewer keeps a read-only role file without a pinned model. The root
@@ -119,7 +119,7 @@ review.
 ~~~
 
 The Skill is intentionally not a generic model-routing framework. It preserves
-the existing roles and delegation gate, with mode-specific concurrency limits.
+the existing roles and delegation gate, with a shared concurrency limit of 8.
 
 ### Explicit high-consumption mode
 
@@ -131,11 +131,12 @@ Use $luna-based-agent-orchestrator in sol-high high-consumption mode to complete
 this task. All subagents must use GPT-6.1 Sol High.
 ~~~
 
-This mode allows up to **8 concurrent subagents**, excluding the root and shared
-across the entire task tree. Default and `luna-reserve` modes remain capped at 4.
-The runtime configuration provides capacity for 8; the Skill enforces each mode's
-limit. A lower host/session limit takes precedence, and already-running sessions
-do not gain slots merely because the configuration file changed.
+All modes allow up to **8 concurrent subagents**, excluding the root and shared
+across the entire task tree. This includes default, `luna-reserve`, and explicit
+`sol-high` mode. The runtime configuration provides capacity for 8; the Skill
+enforces the shared limit. A lower host/session limit takes precedence, and
+already-running sessions do not gain slots merely because the configuration
+file changed.
 
 This covers every role, including reviewers, retries, replacements, and any
 recursively spawned agents. The root keeps its current model and reasoning
