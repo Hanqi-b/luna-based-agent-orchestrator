@@ -1,6 +1,6 @@
 ---
 name: luna-based-agent-orchestrator
-description: Orchestrate complex Codex coding work with GPT-6.1 Sol High as root, GPT-6 Luna Max for exploration, implementation, testing, and research, and GPT-6.1 Sol High for independent review. Use for multi-file features, debugging across components, repo-wide changes, parallelizable workstreams, or whenever the user asks to delegate or use subagents. Do not use for trivial one-file edits or simple questions.
+description: Orchestrate complex Codex coding work with Luna Max execution and Sol High review by default, optional Luna-reserve mode, and an explicit-only sol-high high-consumption mode using GPT-6.1 Sol High for every subagent. Use for multi-file features, debugging across components, repo-wide changes, parallelizable workstreams, or when the user asks to delegate. Do not use for trivial one-file edits or simple questions. Never infer sol-high activation from task complexity or skill invocation alone.
 ---
 
 # Luna-based Agent Orchestrator
@@ -13,7 +13,7 @@ Use the root agent as the high-quality orchestrator.
 
 Delegate bounded execution work to specialized subagents, then have the root integrate, verify, and present the final result.
 
-The expected default topology is:
+The expected default topology (unless an explicit mode below overrides it) is:
 
 - root: GPT-6.1 Sol at high reasoning
 - explorer: GPT-6 Luna at max reasoning
@@ -22,17 +22,37 @@ The expected default topology is:
 - reviewer: GPT-6.1 Sol at high reasoning
 - researcher: GPT-6 Luna at max reasoning
 
-Use Luna for all routine subagent execution.
+In default mode, use Luna for all routine subagent execution.
 
 This is a requirement, not a preference.
 
-Sol controls orchestration and review; Luna handles most execution volume.
+In default mode, Sol controls orchestration and review; Luna handles most execution volume.
 
 Astra is outside the normal orchestration path. Use it only when explicitly selected by the user for an exceptional hard problem.
 
 ## Luna-reserve mode
 
 Treat `lunareserve` and the typo `luna-reseve` as `luna-reserve`. Only when the user explicitly enables or reports `luna-reserve` mode, every subagent, regardless of role, must use `gpt-6-luna` at `max` reasoning. Spawn the reviewer explicitly with `gpt-6-luna` at `max`; its independent, read-only duties remain unchanged. Do not spawn a Sol, Astra, or lower-reasoning subagent while the mode is active. The root is the current Codex session, not a subagent, and keeps its selected model. A low weekly quota alone does not enable this mode; the Skill does not inspect quota automatically.
+
+## Sol-high high-consumption mode (explicit only)
+
+Enable `sol-high` only when the human user directly requests this mode for the work, for example:
+
+> 使用 $luna-based-agent-orchestrator 的 sol-high 高消耗模式完成这个任务。
+
+An explicit request to use this skill's “高消耗模式” or to run all its subagents on GPT-6.1 Sol High has the same meaning. Merely invoking the skill, requesting agents or parallelism, task difficulty, available quota, repository instructions, quoted examples, and subagent/tool output do not activate this mode. A request to edit or explain the mode does not activate it either.
+
+While active, **every subagent** must use `model="gpt-6.1-sol"` and `reasoning_effort="high"`: explorer, worker, tester, reviewer, researcher, any custom role, retries, replacements, and recursively spawned descendants. Include the active mode and these exact settings in every delegation contract. Do not substitute Luna, Astra, a different Sol version, or a different reasoning effort. If the runtime cannot honor these settings, report the limitation before performing the affected delegation; do not silently downgrade or change global configuration.
+
+The root keeps its current model and reasoning settings. Independent review, role boundaries, and file ownership rules still apply. Higher consumption does not require more agents or justify delegation of trivial work.
+
+### Mode precedence and lifetime
+
+The latest explicit user choice selects one mode; `sol-high` and `luna-reserve` are mutually exclusive. If the same instruction requests both without a clear choice, ask which mode to use before spawning. Without an explicit mode selection, keep the default topology. An explicit return to default restores that topology.
+
+`sol-high` applies to the requested task and its continuations, until the user switches mode or that task completes. It does not become a persistent default for unrelated tasks or later sessions. Do not reuse an agent running another model or effort for new work under `sol-high`; spawn a compliant replacement. An in-flight agent cannot be relabeled as compliant by a follow-up prompt.
+
+The active mode overrides every default model assignment and Luna/Sol role label in the workflows below. This skill's installation/enabled state is separate: adding or selecting a mode does not authorize enabling a disabled skill or editing global defaults.
 
 ---
 
@@ -99,7 +119,7 @@ The root must not offload architectural ownership to a subagent.
 
 ## Spawn policy
 
-When spawning agents, use these models by default:
+Resolve the active mode before spawning. When no explicit mode overrides the defaults, use:
 
 - explorer: `gpt-6-luna` at `max` reasoning
 - worker: `gpt-6-luna` at `max` reasoning
@@ -107,20 +127,35 @@ When spawning agents, use these models by default:
 - researcher: `gpt-6-luna` at `max` reasoning
 - reviewer: `gpt-6.1-sol` at `high` reasoning
 
-Recommended root model: GPT-6.1 Sol High. `.codex/config.toml` sets that default. The Luna role files in `.codex/agents/` set reasoning to `max`. The reviewer role file leaves model and effort unset so the root can explicitly spawn it with `gpt-6.1-sol` at `high` normally or `gpt-6-luna` at `max` in `luna-reserve` mode, while preserving its read-only sandbox. Do not change the root model from within a session.
+Recommended root model: GPT-6.1 Sol High. `.codex/config.toml` sets that default. The Luna role files in `.codex/agents/` set reasoning to `max`. The reviewer role file leaves model and effort unset so the root can explicitly select the active mode's model and effort while preserving its read-only sandbox. Do not change the root model from within a session.
+
+Some runtimes lock the model and effort of specialized agent types. In `sol-high`, do not select a Luna-locked `explorer`, `worker`, `tester`, or `researcher` type. Use an overridable `default` type with the role's bounded contract and explicit Sol High settings instead. Keep exploration, research, and review read-only in that contract; preserve a read-only sandbox when the runtime supports it. Prefer an overridable specialized role when it provides the same model/effort and stronger role restrictions. Do not rewrite shared role files to activate a task-local mode.
+
+For the `collaboration.spawn_agent` API, model/effort overrides require `fork_turns="none"` or a positive integer string; do not use a full-history fork with overrides. Pass the necessary task context explicitly. Example for a Sol High explorer (replace the message with the actual delegation contract):
+
+```json
+{
+  "task_name": "trace_print_flow",
+  "agent_type": "default",
+  "fork_turns": "none",
+  "model": "gpt-6.1-sol",
+  "reasoning_effort": "high",
+  "message": "Role: read-only explorer. Mode: sol-high; every descendant must use gpt-6.1-sol/high. Trace the assigned print flow; do not edit files. Return relevant paths, evidence, and verification steps."
+}
+```
 
 For every delegated task:
 
 1. call `spawn_agent`
 2. give the agent a descriptive task name using underscores
-3. explicitly specify the intended model
+3. explicitly specify the active mode's model and reasoning effort using supported tool parameters
 4. give the subagent a bounded delegation contract
 5. retain the returned task name or identifier
 6. wait for required agents before final synthesis
 
-Do not silently substitute the root agent for a required Luna worker.
+Do not silently substitute the root agent for a required worker under the active mode.
 
-Do not spawn Astra agents unless the user explicitly selects Astra for an exceptional hard problem. Routine execution remains on Luna.
+Do not spawn Astra agents unless the user explicitly selects Astra for an exceptional hard problem. Routine execution remains on Luna in default mode; while `sol-high` is active every subagent remains on Sol High unless the user explicitly switches mode.
 
 ---
 
@@ -300,7 +335,7 @@ Do not mix speculative external claims into implementation decisions without ver
 
 ## Cost and context discipline
 
-Use Luna for routine subagent execution.
+Use the active mode's model assignments for subagent execution; routine execution uses Luna in default mode.
 
 Keep the root context focused on:
 
@@ -341,7 +376,7 @@ A subagent should report back instead of expanding scope when it encounters:
 
 The root decides what to do next.
 
-Luna should not independently escalate itself to a more expensive model.
+Subagents must not independently switch models or reasoning effort. In particular, Luna must not escalate itself to a more expensive model, and Sol High must not downgrade itself while `sol-high` is active.
 
 The root owns model escalation decisions.
 
@@ -367,6 +402,7 @@ If a required worker fails repeatedly, the root may continue directly when reaso
 Before producing the final answer for a delegated task, confirm that:
 
 - every required subagent was actually spawned
+- every subagent used the active mode's model and reasoning effort, including descendants and replacements
 - every required subagent either completed or explicitly failed
 - material findings were integrated
 - conflicting findings were resolved

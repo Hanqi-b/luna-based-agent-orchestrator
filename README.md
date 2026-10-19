@@ -121,6 +121,29 @@ review.
 The Skill is intentionally not a generic model-routing framework. It preserves
 the existing roles, delegation gate, and concurrency limit.
 
+### Explicit high-consumption mode
+
+To use GPT-6.1 Sol at "high" reasoning for every subagent, explicitly select
+`sol-high` for the task:
+
+~~~
+Use $luna-based-agent-orchestrator in sol-high high-consumption mode to complete
+this task. All subagents must use GPT-6.1 Sol High.
+~~~
+
+This covers every role, including reviewers, retries, replacements, and any
+recursively spawned agents. The root keeps its current model and reasoning
+settings. Invoking the Skill alone, task complexity, and available quota do not
+activate this mode. It applies to the requested task and its continuations,
+not unrelated future tasks. An explicit user mode switch selects `sol-high`,
+`luna-reserve`, or the default topology; conflicting mode requests need
+clarification.
+
+For runtimes with Luna-locked specialized roles, the Skill uses an overridable
+agent type with explicit model/effort settings and the same bounded role
+contract. Unsupported model settings must be reported rather than silently
+substituted. No global model or role configuration is changed by mode selection.
+
 ## Guides and token usage
 
 The "guides/" directory covers the preserved topology, optional speed and
