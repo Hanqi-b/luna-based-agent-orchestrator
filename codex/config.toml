@@ -23,9 +23,10 @@ sandbox_mode = "workspace-write"
 [agents]
 enabled = true
 
-# Number of child agent threads Codex may keep open concurrently.
-# Maximum of 4; spawn only for genuinely independent work.
-max_concurrent_threads_per_session = 4
+# Runtime capacity for explicit sol-high mode: up to 8 concurrent subagents.
+# The Skill caps default and luna-reserve modes at 4; sol-high at 8.
+# Spawn only for genuinely independent work, within the shared task budget.
+max_concurrent_threads_per_session = 8
 
 # Default for any spawned subagent that does not explicitly choose a model.
 # Luna execution roles use maximum reasoning. Spawn the reviewer explicitly with

@@ -27,10 +27,16 @@ model_reasoning_effort = "high"
 
 [agents]
 enabled = true
-max_concurrent_threads_per_session = 4
+max_concurrent_threads_per_session = 8
 default_subagent_model = "gpt-6-luna"
 default_subagent_reasoning_effort = "max"
 ~~~
+
+The runtime capacity is 8 concurrent subagents. The Skill keeps default and
+`luna-reserve` mode at 4 and permits up to 8 only for explicitly requested
+`sol-high` mode. This is a shared task-wide budget, excluding the root. A lower
+host/session limit still applies; existing sessions must load the new
+configuration before additional capacity can be available.
 
 For the named roles, use these model settings in the corresponding files under
 "codex/agents/":

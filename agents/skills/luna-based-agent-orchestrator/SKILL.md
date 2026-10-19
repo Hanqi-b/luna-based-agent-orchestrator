@@ -235,9 +235,13 @@ Use `researcher` for:
 
 ## Parallelism
 
-Run independent tasks in parallel.
+The concurrent subagent ceiling is **8 in explicit `sol-high` mode** and **4 in default or `luna-reserve` mode**. These limits exclude the root and apply across the entire task tree, including recursively spawned descendants and replacements; they are not separate allowances for each parent. The root owns the shared budget and includes the available allocation in every delegation contract. Spawn only as many agents as the work needs, not enough to fill the ceiling.
 
-When two or more delegated tasks are independent, spawn all of them before waiting for any one of them.
+The installation's `agents.max_concurrent_threads_per_session = 8` supplies runtime capacity for `sol-high`. The mode-specific 4/8 limits are enforced by this orchestration policy; the shared runtime setting alone does not select a mode or constrain unrelated skills to four agents. Do not rewrite runtime configuration when switching modes. A lower runtime or host limit takes precedence: queue excess work and report the effective limit rather than claiming eight slots are available. Editing configuration does not increase a running session's allocated slots; use a session that has loaded the updated configuration when greater capacity is needed.
+
+Run independent tasks in parallel within the active mode's shared budget.
+
+When two or more delegated tasks are independent and capacity is available, spawn them before waiting for any one of them. Queue remaining independent tasks until capacity is available.
 
 Good parallel set:
 
@@ -403,6 +407,7 @@ Before producing the final answer for a delegated task, confirm that:
 
 - every required subagent was actually spawned
 - every subagent used the active mode's model and reasoning effort, including descendants and replacements
+- concurrent subagents stayed within the shared mode limit (8 for `sol-high`, 4 otherwise) and the runtime limit
 - every required subagent either completed or explicitly failed
 - material findings were integrated
 - conflicting findings were resolved

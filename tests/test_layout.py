@@ -44,7 +44,7 @@ class LayoutTests(unittest.TestCase):
         self.assertEqual(config["model"], "gpt-6.1-sol")
         self.assertEqual(config["model_reasoning_effort"], "high")
         self.assertEqual(config["agents"]["enabled"], True)
-        self.assertEqual(config["agents"]["max_concurrent_threads_per_session"], 4)
+        self.assertEqual(config["agents"]["max_concurrent_threads_per_session"], 8)
         self.assertEqual(config["agents"]["default_subagent_model"], "gpt-6-luna")
         self.assertEqual(config["agents"]["default_subagent_reasoning_effort"], "max")
 
